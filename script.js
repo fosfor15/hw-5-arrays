@@ -12,9 +12,14 @@
 var name;
 var count;
 var isBought;
+// В современном JS используют объявление переменных с исп. команды let. Команда var используется тогда, когда необъодимы особенности таких переменных.
+// Также эти переменные нигде не используются
 
 let shoppingList = [
 
+    // Имена tomato и пр., к которым вы присваиваете объекты, относятся к каким сущностям? Когда мы записываем имя слева от = , мы либо создаем сущность с таким именем, либо используем уже существующую сущность.
+    // В массиве объектов каждый объект-элемент массива не должен храниться под каким-либо именем сущности, он будет хранится как элемент массива под своим собственным индексом.
+    // При оформлении массива объектов сами объекты записываются без имён и только с фигурными скобками. Посмотрите на примеры подобных массивов объектов в нашей практике по массивам.
     tomato = {
         name: 'tomato',
         count: 5,
@@ -39,8 +44,10 @@ let shoppingList = [
         isBought: true,
     }
 ]
+// Инструкции с приваиванием необходимо завершать ;
 
 function printList(shoppingList) {
+    // Отлично!
     shoppingList.forEach((product, name, count, isBought) => {
         let str = `Name: ${product.name}, count to buy = ${product.count}, is bought = ${product.isBought}`;
         console.log(str);
@@ -54,6 +61,7 @@ console.log('If product is bought? ->');
 
 const sortedShoppingList = [...shoppingList];
 
+// Для работы этой функции всегда потребуется наличие внешней сущности sortedShoppingList. Гораздо правильнее, если эта функция будет принмать массив объектов в виде аргумента и копировать его в свою локальную сущность sortedShoppingList, а потом сортировать её и возвращать.
 function sortIsBought() {
     sortedShoppingList.sort( (a, b) => a.isBought - b.isBought);
     return sortedShoppingList;
@@ -70,6 +78,8 @@ let shoppingListWithNewProduct = [...sortedShoppingList];//для удобств
 function addProduct(name, count) {
 
     if (shoppingListWithNewProduct.find(product => product.name === name)) {
+
+        // Здесь можно использовать результат работы метода find – он уже найдёт нужный объект в массиве покупок, т.о. вам не придётся искать этот объект покупки заново через цикл for.
         for (var i = 0; i < shoppingListWithNewProduct.length; i++) {
             if (shoppingListWithNewProduct[i].name === name) {
                 shoppingListWithNewProduct[i].count += count;
@@ -82,7 +92,9 @@ function addProduct(name, count) {
             isBought: false,
         }) 
     }
+
     return shoppingListWithNewProduct;
+    // Совсем не нужно возвращать результат из функции, если этот результат находится во внешней сущности. Вы уже изменили внешний массив shoppingListWithNewProduct и данной функции не нужно возвращать этот результат.
 }
 
 addProduct('milk', 2);
@@ -96,6 +108,8 @@ let shoppingListChecked = [...shoppingListWithNewProduct];
 
 function checkBoughtProduct(name) {
     if (shoppingListWithNewProduct.find(product => product.name === name)) {
+        
+        // Здесь то же, как и в прошлой функции
         for (var i = 0; i < shoppingListWithNewProduct.length; i++) {
             if (shoppingListWithNewProduct[i].name === name) {
                 shoppingListWithNewProduct[i].isBought = true;
